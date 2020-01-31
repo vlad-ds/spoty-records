@@ -1,6 +1,6 @@
 Medium article: 
 
-Welcome to spoty-records! This script will extract your Spotify streaming history, connect to the Spotify API to acquire the songs' features, and organize everything into a handy .csv file to examine with Pandas or other tools. 
+Welcome to spoty-records! This script will extract your Spotify streaming history, connect to the Spotify API to acquire the songs' features, and organize everything into a handy .csv file. 
 
 Dependencies:
 
