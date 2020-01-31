@@ -20,6 +20,7 @@ def get_token(user: str,
               client_secret: str,
               redirect_uri: str,
               scope: str) -> str:
+  
     token = util.prompt_for_user_token(user,scope,
                                                client_id=client_id,
                                                client_secret=client_secret,
