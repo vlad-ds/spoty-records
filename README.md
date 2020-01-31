@@ -20,6 +20,6 @@ Steps:
 
 5. The script will now reconstruct your listening history, connect to Spotify API to get the song IDs, and then use those IDs to extract the features. 
 
-5. If you still miss IDs or features, you can run the script again and retry your luck with the API. Collected IDs and features are saved, so we don't make repeated requests. 
+5. If you still miss IDs or features, you can run the script again and retry your luck with the API. Collected IDs and features are saved locally, so we don't make repeated requests. 
 
 6. Find your song history, complete with features, in 'output/final.csv'. Happy exploration! 
