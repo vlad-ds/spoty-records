@@ -6,7 +6,7 @@ Dependencies:
 
 	> Pandas: https://pandas.pydata.org/
 	> Spotipy: https://spotipy.readthedocs.io/en/2.7.1/
-  > Requests: https://requests.readthedocs.io/en/master/
+	> Requests: https://requests.readthedocs.io/en/master/
 
 Steps:
 
