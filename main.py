@@ -16,6 +16,7 @@ def main():
     #recover streamings history
     token = history.get_token(username, client_id, 
                               client_secret, redirect_uri, scope)
+    
     streamings = history.get_streamings()
     print(f'Recovered {len(streamings)} streamings.')
     
