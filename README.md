@@ -8,7 +8,7 @@ Dependencies:
 	> Spotipy: https://spotipy.readthedocs.io/en/2.7.1/
 	> Requests: https://requests.readthedocs.io/en/master/
 
-Steps:
+Instructions:
 
 1. Enter your account dashboard at https://www.spotify.com/. In the privacy settings, apply for the download of your personal data. This might take a few days. When you get the mail, download the zip archive and place the MyData folder into the script folder. 
 
