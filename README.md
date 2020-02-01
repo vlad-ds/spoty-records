@@ -4,9 +4,11 @@ Medium article:
 
 Dependencies:
 
-	> Pandas: https://pandas.pydata.org/
-	> Spotipy: https://spotipy.readthedocs.io/en/2.7.1/
-	> Requests: https://requests.readthedocs.io/en/master/
+<ul>
+<li>Pandas: https://pandas.pydata.org/</li>
+<li>Spotipy: https://spotipy.readthedocs.io/en/2.7.1/</li>
+<li>Requests: https://requests.readthedocs.io/en/master/</li>
+</ul>
 
 Instructions:
 
