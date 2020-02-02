@@ -1,4 +1,4 @@
-<h3>Welcome to <b>spoty-records!</b> </h3>
+<h3 align = 'center'>Welcome to <b>spoty-records!</b> </h3>
 
 Extract your Spotify streaming history, connect to the Spotify API to acquire the songs' features, and organize everything into a handy .csv file. 
 
