@@ -99,12 +99,7 @@ def main():
     #joining features and streamings
     print('Adding features to streamings...')
     streamings_with_features = []
-    file = open("temp.txt", "w", encoding="utf-8")
-    i = 0
     for streaming in sorted(streamings, key= lambda x: x['endTime']):
-        if i < 100:
-            file.write(str(streaming))
-        i += 1
         track = streaming['trackName'] + "___" + streaming['artistName']
         features = track_features.get(track)
         if features:
@@ -117,6 +112,7 @@ def main():
     perc_featured = round(len(streamings_with_features) / len(streamings) *100, 2)
     print(f"Done! Percentage of streamings with features: {perc_featured}%.") 
     print("Run the script again to try getting more information from Spotify.")
+
     
 if __name__ == '__main__':
     main()
