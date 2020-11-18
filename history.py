@@ -104,7 +104,16 @@ def get_api_features(track_id: str, token: str) -> dict:
         return features[0]
     except:
         return None
-    
+
+def get_album(track_id: str, token: str) -> dict:
+    sp = spotipy.Spotify(auth=token)
+    try:
+        album = sp.track(track_id)
+        album = album['album']['name']
+        return album
+    except:
+        return None
+
 def get_saved_features(tracks, path = 'output/features.csv'):
     folder, file = path.split('/')
     track_features = {track: None for track in tracks}

@@ -73,11 +73,12 @@ def main():
     if len (tracks_without_features):
         print('Connecting to Spotify to extract features...')
         acquired = 0
-        for track, idd in track_ids.items(): 
+        for track, idd in track_ids.items():
             if idd is not None and track in tracks_without_features:
                 try:
                     features = history.get_api_features(idd, token)
                     track_features[track] = features
+                    features['albumName'] = history.get_album(idd, token)
                     if features:
                         acquired += 1
                         print(f'Acquired features: {track}. Total: {acquired}')
