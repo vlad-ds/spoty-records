@@ -21,7 +21,7 @@ def main():
     print(f'Recovered {len(streamings)} streamings.')
     
     #getting a list of unique tracks in our history
-    # Add artist names too as multiple songs can have same artist
+    # Add artist names too as multiple artist can have same song name
     tracks = set([f"{streaming['trackName']}___{streaming['artistName']}" for streaming in streamings])
     print(f'Discovered {len(tracks)} unique tracks.')
     
