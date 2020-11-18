@@ -104,7 +104,6 @@ def main():
         features = track_features.get(track)
         if features:
             streamings_with_features.append({'name': track, **streaming, **features})
-    file.close()
     print(f'Added features to {len(streamings_with_features)} streamings.')
     print('Saving streamings...')
     df_final = pd.DataFrame(streamings_with_features)
@@ -113,6 +112,6 @@ def main():
     print(f"Done! Percentage of streamings with features: {perc_featured}%.") 
     print("Run the script again to try getting more information from Spotify.")
 
-    
+
 if __name__ == '__main__':
     main()
