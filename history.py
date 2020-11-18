@@ -48,31 +48,40 @@ def get_streamings(path: str = 'MyData',
         streaming['datetime'] = datetime.strptime(streaming['endTime'], '%Y-%m-%d %H:%M')    
     return all_streamings
 
-def get_api_id(track_name: str, token: str, 
+def get_api_id(track_info: str, token: str,
                 artist: str = None) -> str:
     
     '''Performs a query on Spotify API to get a track ID.
     See https://curl.trillworks.com/'''
-   
+
     headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
     'Authorization': f'Bearer ' + token,
     }
-    
+    track_name = track_info.split("___")[0]
     params = [
     ('q', track_name),
     ('type', 'track'),
     ]
-    
-    if artist: 
+    artist = track_info.split("___")[-1]
+    if artist:
         params.append(('artist', artist))
         
     try:
         response = requests.get('https://api.spotify.com/v1/search', 
                     headers = headers, params = params, timeout = 5)
         json = response.json()
+        results = json['tracks']['items']
         first_result = json['tracks']['items'][0]
+        # Check if searched artist is in response as the first one isn't
+        # necessarily the right one
+        if artist:
+            for result in results:
+                if artist.strip() == result['artists'][0]['name'].strip():
+                    track_id = result['id']
+                    return track_id
+        # If specific artist is not found from results, use the first one
         track_id = first_result['id']
         return track_id
     except:
@@ -109,10 +118,11 @@ def get_album(track_id: str, token: str) -> dict:
     sp = spotipy.Spotify(auth=token)
     try:
         album = sp.track(track_id)
-        album = album['album']['name']
-        return album
+        album_id = album['album']['id']
+        album_name = album['album']['name']
+        return album_name, album_id
     except:
-        return None
+        return None, None
 
 def get_saved_features(tracks, path = 'output/features.csv'):
     folder, file = path.split('/')

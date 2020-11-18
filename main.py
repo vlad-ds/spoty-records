@@ -21,7 +21,8 @@ def main():
     print(f'Recovered {len(streamings)} streamings.')
     
     #getting a list of unique tracks in our history
-    tracks = set([streaming['trackName'] for streaming in streamings])
+    # Add artist names too as multiple songs can have same artist
+    tracks = set([f"{streaming['trackName']}___{streaming['artistName']}" for streaming in streamings])
     print(f'Discovered {len(tracks)} unique tracks.')
     
     #getting saved ids for tracks
@@ -37,12 +38,13 @@ def main():
         #podcasts and other items will be ignored.
         print('Connecting to Spotify to recover tracks IDs.')
         sleep(3)
+        id_length = 22
         for track, idd in track_ids.items(): 
-            if idd is None: 
+            if idd is None:
                 try:
                     found_idd = history.get_api_id(track, token)
                     track_ids[track] = found_idd
-                    print(track, found_idd)
+                    print(f"{found_idd:<{id_length}} : {', '.join(track.split('___'))}")
                 except:
                     pass
         
@@ -78,10 +80,10 @@ def main():
                 try:
                     features = history.get_api_features(idd, token)
                     track_features[track] = features
-                    features['albumName'] = history.get_album(idd, token)
+                    features['albumName'], features['albumID'] = history.get_album(idd, token)
                     if features:
                         acquired += 1
-                        print(f'Acquired features: {track}. Total: {acquired}')
+                        print(f"Acquired features: {', '.join(track.split('___'))}. Total: {acquired}")
                 except:
                     features = None
         tracks_without_features = [track for track in tracks if track_features.get(track) is None]
@@ -97,11 +99,17 @@ def main():
     #joining features and streamings
     print('Adding features to streamings...')
     streamings_with_features = []
-    for streaming in streamings:
-        track = streaming['trackName']
-        features = track_features[track]
+    file = open("temp.txt", "w", encoding="utf-8")
+    i = 0
+    for streaming in sorted(streamings, key= lambda x: x['endTime']):
+        if i < 100:
+            file.write(str(streaming))
+        i += 1
+        track = streaming['trackName'] + "___" + streaming['artistName']
+        features = track_features.get(track)
         if features:
             streamings_with_features.append({'name': track, **streaming, **features})
+    file.close()
     print(f'Added features to {len(streamings_with_features)} streamings.')
     print('Saving streamings...')
     df_final = pd.DataFrame(streamings_with_features)
