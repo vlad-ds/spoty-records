@@ -1,0 +1,9 @@
+config.py
+*.json
+.cache*
+.idea/
+__pycache__/
+output/
+test*
+*Copy*
+temp.txt

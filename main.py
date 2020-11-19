@@ -21,7 +21,8 @@ def main():
     print(f'Recovered {len(streamings)} streamings.')
     
     #getting a list of unique tracks in our history
-    tracks = set([streaming['trackName'] for streaming in streamings])
+    # Add artist names too as multiple artist can have same song name
+    tracks = set([f"{streaming['trackName']}___{streaming['artistName']}" for streaming in streamings])
     print(f'Discovered {len(tracks)} unique tracks.')
     
     #getting saved ids for tracks
@@ -37,12 +38,13 @@ def main():
         #podcasts and other items will be ignored.
         print('Connecting to Spotify to recover tracks IDs.')
         sleep(3)
+        id_length = 22
         for track, idd in track_ids.items(): 
-            if idd is None: 
+            if idd is None:
                 try:
                     found_idd = history.get_api_id(track, token)
                     track_ids[track] = found_idd
-                    print(track, found_idd)
+                    print(f"{found_idd:<{id_length}} : {', '.join(track.split('___'))}")
                 except:
                     pass
         
@@ -73,14 +75,15 @@ def main():
     if len (tracks_without_features):
         print('Connecting to Spotify to extract features...')
         acquired = 0
-        for track, idd in track_ids.items(): 
+        for track, idd in track_ids.items():
             if idd is not None and track in tracks_without_features:
                 try:
                     features = history.get_api_features(idd, token)
                     track_features[track] = features
+                    features['albumName'], features['albumID'] = history.get_album(idd, token)
                     if features:
                         acquired += 1
-                        print(f'Acquired features: {track}. Total: {acquired}')
+                        print(f"Acquired features: {', '.join(track.split('___'))}. Total: {acquired}")
                 except:
                     features = None
         tracks_without_features = [track for track in tracks if track_features.get(track) is None]
@@ -96,9 +99,9 @@ def main():
     #joining features and streamings
     print('Adding features to streamings...')
     streamings_with_features = []
-    for streaming in streamings:
-        track = streaming['trackName']
-        features = track_features[track]
+    for streaming in sorted(streamings, key= lambda x: x['endTime']):
+        track = streaming['trackName'] + "___" + streaming['artistName']
+        features = track_features.get(track)
         if features:
             streamings_with_features.append({'name': track, **streaming, **features})
     print(f'Added features to {len(streamings_with_features)} streamings.')
@@ -108,6 +111,7 @@ def main():
     perc_featured = round(len(streamings_with_features) / len(streamings) *100, 2)
     print(f"Done! Percentage of streamings with features: {perc_featured}%.") 
     print("Run the script again to try getting more information from Spotify.")
-    
+
+
 if __name__ == '__main__':
     main()
